@@ -23,14 +23,42 @@ class Mario:
                     if self.position < 8:
                         self.position += 1
                 elif evenement == pygame.K_UP:
-                    print("à implémenter ...")
+                    pass
                 elif evenement == pygame.K_SPACE:
-                    print("à implémenter ...")
+                    if self.position in [0, 6]:
+                        self.etat = Constantes.SAUT
+                        self.delai = 12
             elif self.ligne == 3:
-                print("à implémenter ...")
+                if evenement == pygame.K_LEFT:
+                    if self.position > 0:
+                        self.position -= 1
+                elif evenement == pygame.K_RIGHT:
+                    if self.position < 8:
+                        self.position += 1
+                elif evenement == pygame.K_UP:
+                    pass
+                elif evenement == pygame.K_SPACE:
+                    if self.position in [4, 5, 6]:
+                        self.etat = Constantes.SAUT
+                        self.delai = 12
             elif self.ligne == 2:
-                print("à implémenter ...")
+                pass
             elif self.ligne == 1:
-                print("à implémenter ...")
+                pass
             elif self.ligne == 0:
-                print("à implémenter ...")
+                if evenement == pygame.K_LEFT:
+                    if self.position > 0:
+                        self.position -= 1
+                elif evenement == pygame.K_RIGHT:
+                    if self.position < 2:
+                        self.position += 1
+                elif evenement == pygame.K_UP:
+                    pass
+                elif evenement == pygame.K_SPACE:
+                    if self.position == 0:
+                        self.etat = Constantes.LEVIER
+                        self.delai = 3
+                    elif self.position == 2:
+                        self.etat = Constantes.SAUT
+                        self.delai = 3
+                
