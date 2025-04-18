@@ -1,10 +1,13 @@
 from presentation import *
 from mario import *
+from timerBarres import *
 
 class Jeu:
     def __init__(self):
         self.presentation = Presentation() 
         self.mario = Mario() 
+        self.timerBarres = TimerBarres()
+        self.bars = []
 
     # ----------------------------------------------------------------------------
     # Méthode contenant la boucle principale du jeu
@@ -15,8 +18,9 @@ class Jeu:
 	
             self.mario.actualiser(self.presentation.lireEvenement())
 
+            if self.timerBarres.actualiser(self.presentation.lireEvenement()):
+                pass
             # Mettre à jour l'image à l'écran
-
             self.actualiserEcran()
 
             # attendre 100 millisecondes (délai de référence)
