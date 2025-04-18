@@ -16,5 +16,6 @@ class TimerBarres:
                 self.current_delai = randint(70,100)
             
             self.delai = self.current_delai
-            
-        return False if self.delai > 0 else True
+            return True
+        else:
+            return False
