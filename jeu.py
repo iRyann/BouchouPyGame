@@ -2,6 +2,7 @@ from presentation import *
 from mario import *
 from timerBarres import *
 from barre import *
+from donkeykong import *
 
 class Jeu:
     def __init__(self):
@@ -10,6 +11,7 @@ class Jeu:
         self.timerBarres = TimerBarres()
         self.bars = []
         self.echecCount = 0
+        self.donkeyKong = DonkeyKong()
 
     # ----------------------------------------------------------------------------
     # Méthode contenant la boucle principale du jeu
@@ -19,6 +21,7 @@ class Jeu:
 
             # récupérer l'événement du joueur et changer l'état de Mario
             self.mario.actualiser(self.presentation.lireEvenement())
+            self.donkeyKong.actualiser(self.presentation.lireEvenement())
             
             # Gérer les barres
             if self.timerBarres.actualiser(self.presentation.lireEvenement()):
@@ -47,6 +50,8 @@ class Jeu:
 
         self.presentation.afficherMario(self.mario.ligne, self.mario.position,
                                         self.mario.etat)
+        self.presentation.afficherDonkeyKong(self.donkeyKong.position, self.donkeyKong.state)
+        
         for barre in self.bars:
             self.presentation.afficherBarre(barre.position)
 
