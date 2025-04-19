@@ -37,6 +37,12 @@ class Jeu:
                 barre.actualiser(self.presentation.lireEvenement())
                 if barre.state == Constantes.TERMINE:
                     self.bars.remove(barre)
+
+            # Gérer les tonneaux
+            for cask in self.casks:
+                cask.actualiser(self.presentation.lireEvenement())
+                if cask.etat == Constantes.TERMINE:
+                    self.casks.remove(cask)
             
             # Détecter les collisions entre Mario et les barres
             self.collider()
