@@ -4,6 +4,7 @@ from timerBarres import *
 from barre import *
 from donkeykong import *
 from grue import *
+from tonneau import *
 
 class Jeu:
     def __init__(self):
@@ -16,6 +17,7 @@ class Jeu:
         self.grue = Grue()
         self.nbCrochets = 4
         self.points = 0
+        self.casks = []
     # ----------------------------------------------------------------------------
     # Méthode contenant la boucle principale du jeu
 
@@ -24,7 +26,8 @@ class Jeu:
             self.sucess = 0
             # récupérer l'événement du joueur et changer l'état de Mario
             self.mario.actualiser(self.presentation.lireEvenement())
-            self.donkeyKong.actualiser(self.presentation.lireEvenement())
+            if(self.donkeyKong.actualiser(self.presentation.lireEvenement())):
+                self.casks.append(Tonneau(self.donkeyKong.position))
             
             # Gérer les barres
             if self.timerBarres.actualiser(self.presentation.lireEvenement()):
@@ -95,6 +98,9 @@ class Jeu:
         
         for barre in self.bars:
             self.presentation.afficherBarre(barre.position)
+        
+        for cask in self.casks:
+            self.presentation.afficherTonneau(cask.ligne, cask.position)
         
         self.presentation.afficherLevier(self.grue.state)
         
