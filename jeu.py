@@ -62,7 +62,7 @@ class Jeu:
                         self.actualiserEcran(False, seqNum=0, sucNum=i)
                         time.sleep(0.2)
                     self.mario.reset()
-            elif(((self.grue.state == Constantes.NORMAL and self.grue.position != 0) or self.grue.state == Constantes.TERMINE) and self.mario.etat == Constantes.SAUT):
+            elif(((self.grue.state == Constantes.NORMAL and self.grue.position != 0) or self.grue.state == Constantes.TERMINE) and self.mario.etat == Constantes.SAUT and self.mario.ligne == 0):
                 self.echecCount += 1
                 for i in range(1, 3):
                     self.actualiserEcran(False, seqNum=i)
