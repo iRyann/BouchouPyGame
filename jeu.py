@@ -142,7 +142,7 @@ class Jeu:
                     break
     
     def cask_collider(self):
-        positions_ligne3 = {cask.position for cask in self.casks if cask.ligne == 3}
+        positions_ligne3 = {cask.position+1 for cask in self.casks if cask.ligne == 3}
         for cask in self.casks:
             if cask.ligne == 2 and cask.position in positions_ligne3:
                 self.casks.remove(cask)
