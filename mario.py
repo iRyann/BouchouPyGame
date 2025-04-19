@@ -8,9 +8,10 @@ class Mario:
         self.etat = Constantes.NORMAL
         self.delai = 1
 
-    def reset(self):
-        self.position = 0
-        self.ligne = 4
+    def reset(self, stayAtPosition=False):
+        if not stayAtPosition:
+            self.position = 0
+            self.ligne = 4
         self.etat = Constantes.NORMAL
         self.delai = 1
 

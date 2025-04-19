@@ -19,3 +19,8 @@ class TimerBarres:
             return True
         else:
             return False
+    
+    def reset(self):
+        self.delai = 85
+        self.new_time = 500
+        self.current_delai = 85
