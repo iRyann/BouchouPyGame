@@ -16,8 +16,6 @@ class Tonneau:
 
             if self.ligne in [0, 1, 2]:
                 self.ligne += 1
-                if self.ligne == 3:
-                    self.position = 6
             elif self.ligne == 3:
                 if self.position > 0:
                     self.position -= 1

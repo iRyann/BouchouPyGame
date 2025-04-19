@@ -37,6 +37,9 @@ class Jeu:
                 barre.actualiser(self.presentation.lireEvenement())
                 if barre.state == Constantes.TERMINE:
                     self.bars.remove(barre)
+            
+            # Détecter les collisions entre Mario et les barres
+            self.collider()
 
             # Gérer les tonneaux
             for cask in self.casks:
@@ -44,8 +47,7 @@ class Jeu:
                 if cask.etat == Constantes.TERMINE:
                     self.casks.remove(cask)
             
-            # Détecter les collisions entre Mario et les barres
-            self.collider()
+            self.cask_collider()
 
             # Gérer la grue
             self.grue.actualiser(self.presentation.lireEvenement())
@@ -138,6 +140,12 @@ class Jeu:
                 if barre.position == self.mario.position:
                     self.collision()
                     break
+    
+    def cask_collider(self):
+        positions_ligne3 = {cask.position for cask in self.casks if cask.ligne == 3}
+        for cask in self.casks:
+            if cask.ligne == 2 and cask.position in positions_ligne3:
+                self.casks.remove(cask)
     
     def victory(self):
         self.mario.reset()
