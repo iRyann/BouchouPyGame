@@ -36,7 +36,7 @@ class Jeu:
             if self.timerBarres.actualiser(self.presentation.lireEvenement()):
                 self.bars.append(Barre())
             
-            for barre in self.bars:
+            for barre in self.bars[:]:
                 barre.actualiser(self.presentation.lireEvenement())
                 if barre.state == Constantes.TERMINE:
                     self.bars.remove(barre)
@@ -45,7 +45,7 @@ class Jeu:
             self.collider()
 
             # Gérer les tonneaux
-            for cask in self.casks:
+            for cask in self.casks[:]:
                 cask.actualiser(self.presentation.lireEvenement())
                 if cask.etat == Constantes.TERMINE:
                     self.casks.remove(cask)
@@ -129,26 +129,26 @@ class Jeu:
     def collision(self):
         time.sleep(0.5)
         self.echecCount += 1
-        for cask in self.casks:
+        for cask in self.casks[:]:
             if cask.ligne == 6 and cask.position in [1, 2, 3]:
                 self.casks.remove(cask)
         self.mario.reset()
 
     def collider(self):
         if self.mario.ligne == 2 :
-            for barre in self.bars:
+            for barre in self.bars[:]:
                 if barre.position == 0:
                     self.collision()
                     break
         elif self.mario.ligne == 3 and self.mario.etat == Constantes.SAUT:
-            for barre in self.bars:
+            for barre in self.bars[:]:
                 if barre.position == self.mario.position:
                     self.collision()
                     break
     
     def cask_collider(self):
         positions_ligne3 = {cask.position+1 for cask in self.casks if cask.ligne == 3}
-        for cask in self.casks:
+        for cask in self.casks[:]:
             if cask.ligne == 2 and cask.position in positions_ligne3:
                 self.casks.remove(cask)
 
