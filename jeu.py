@@ -23,7 +23,10 @@ class Jeu:
 
     def demarrer(self):
         while True: 
-            self.sucess = 0
+            
+            if self.echecCount >= 3:
+                self.presentation.attendreFermetureFenetre()
+
             # récupérer l'événement du joueur et changer l'état de Mario
             self.mario.actualiser(self.presentation.lireEvenement())
             if(self.donkeyKong.actualiser(self.presentation.lireEvenement())):
@@ -48,6 +51,8 @@ class Jeu:
                     self.casks.remove(cask)
             
             self.cask_collider()
+
+            self.cask_mario_collider()
 
             # Gérer la grue
             self.grue.actualiser(self.presentation.lireEvenement())
@@ -115,9 +120,6 @@ class Jeu:
         self.presentation.afficherGrue(self.grue.position, self.grue.state)
 
         self.presentation.afficherEchecs(self.echecCount)
-        if(self.echecCount == 3):
-            self.presentation.effacerImageInterne()
-            self.presentation.attendreFermetureFenetre()
 
         self.presentation.afficherScore(self.points)
         self.presentation.afficherEchafaudage(self.nbCrochets)
@@ -127,6 +129,9 @@ class Jeu:
     def collision(self):
         time.sleep(0.5)
         self.echecCount += 1
+        for cask in self.casks:
+            if cask.ligne == 6 and cask.position in [1, 2, 3]:
+                self.casks.remove(cask)
         self.mario.reset()
 
     def collider(self):
@@ -146,6 +151,28 @@ class Jeu:
         for cask in self.casks:
             if cask.ligne == 2 and cask.position in positions_ligne3:
                 self.casks.remove(cask)
+
+    def cask_mario_collider(self):
+        bias = {
+            0: -1,
+            1: 0,
+            2: -1,
+            3: 1,
+            4: -1,
+            5: 3,
+            6: 4
+        }
+        for cask in self.casks:
+            if bias[cask.ligne]  == self.mario.ligne :
+                if (bias[cask.ligne] == 0 and cask.position == self.mario.position) \
+                or (bias[cask.ligne] == 1 and cask.position == 1) \
+                or (bias[cask.ligne] == 3 and cask.position-1 == self.mario.position) \
+                or (bias[cask.ligne] == 4 and cask.position == self.mario.position + 1):
+                    if self.mario.etat == Constantes.SAUT:
+                        self.points += 1
+                    else:
+                        self.collision()       
+                
     
     def victory(self):
         self.mario.reset()

@@ -50,6 +50,9 @@ class Mario:
                     if self.position in [4, 5, 6]:
                         self.etat = Constantes.SAUT
                         self.delai = 12
+                elif evenement == pygame.K_DOWN:
+                    if self.position == 8:
+                        self.ligne = 4
             elif self.ligne == 2:
                 if evenement == pygame.K_UP:
                     self.ligne = 1
