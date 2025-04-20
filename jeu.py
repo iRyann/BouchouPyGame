@@ -163,15 +163,19 @@ class Jeu:
             6: 4
         }
         for cask in self.casks:
-            if bias[cask.ligne]  == self.mario.ligne :
-                if (bias[cask.ligne] == 0 and cask.position == self.mario.position) \
-                or (bias[cask.ligne] == 1 and cask.position == 1) \
-                or (bias[cask.ligne] == 3 and cask.position-1 == self.mario.position) \
-                or (bias[cask.ligne] == 4 and cask.position == self.mario.position + 1):
-                    if self.mario.etat == Constantes.SAUT:
-                        self.points += 1
-                    else:
-                        self.collision()       
+            if bias[cask.ligne] == self.mario.ligne and self._is_collision(cask, bias):
+                if self.mario.etat == Constantes.SAUT:
+                    self.points += 1
+                else:
+                    self.collision()
+
+    def _is_collision(self, cask, bias):
+        return (
+            (bias[cask.ligne] == 0 and cask.position == self.mario.position) or
+            (bias[cask.ligne] == 1 and cask.position == 1) or
+            (bias[cask.ligne] == 3 and cask.position - 1 == self.mario.position) or
+            (bias[cask.ligne] == 4 and cask.position == self.mario.position + 1)
+        )
                 
     
     def victory(self):
