@@ -74,6 +74,7 @@ class Jeu:
                     for i in range(1, 4):
                         self.actualiserEcran(False, seqNum=0, sucNum=i)
                         time.sleep(0.2)
+                    self._remove_casks_at_start()
                     self.mario.reset()
             elif(((self.grue.state == Constantes.NORMAL and self.grue.position != 0) or self.grue.state == Constantes.TERMINE) and self.mario.etat == Constantes.SAUT and self.mario.ligne == 0):
                 self.echecCount += 1
@@ -129,10 +130,13 @@ class Jeu:
     def collision(self):
         time.sleep(0.5)
         self.echecCount += 1
+        self._remove_casks_at_start()
+        self.mario.reset()
+
+    def _remove_casks_at_start(self):
         for cask in self.casks[:]:
             if cask.ligne == 6 and cask.position in [1, 2, 3]:
                 self.casks.remove(cask)
-        self.mario.reset()
 
     def collider(self):
         if self.mario.ligne == 2 :
@@ -164,8 +168,9 @@ class Jeu:
         }
         for cask in self.casks:
             if bias[cask.ligne] == self.mario.ligne and self._is_collision(cask, bias):
-                if self.mario.etat == Constantes.SAUT:
-                    self.points += 1
+                if self.mario.etat == Constantes.SAUT :
+                    if cask.delai == 0:
+                        self.points += 1
                 else:
                     self.collision()
 

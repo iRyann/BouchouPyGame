@@ -22,7 +22,7 @@ class DonkeyKong:
             self.position += gap
             
         if self.tonneauDelay == 0:
-            self.tonneauDelay = randint(36, 54)
+            self.tonneauDelay = randint(40, 54)
             self.state = Constantes.TONNEAU
             self.delay = 6
             return True
