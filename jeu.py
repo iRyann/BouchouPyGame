@@ -62,26 +62,21 @@ class Jeu:
             # elif(self.mario.etat == Constantes.LEVIER and self.grue.state == Constantes.NORMAL):
             #     self.grue.state = Constantes.TERMINE
             
-            if(self.grue.state == Constantes.NORMAL and self.grue.position == 0 and self.mario.etat == Constantes.SAUT and self.nbCrochets > 0):
+            if(self.grue.state == Constantes.NORMAL and self.grue.position == 0 and self.mario.ligne == 0 and self.mario.etat == Constantes.SAUT and self.nbCrochets > 0):
                 self.nbCrochets -= 1
                 self.points += 5
                 if(self.nbCrochets == 0):
-                    for i in range(1, 6):
-                        self.actualiserEcran(False, seqNum=0, sucNum=i)
-                        time.sleep(0.2)
+                    self.display_success_sequence()
                     self.victory()
                 else:
-                    for i in range(1, 4):
-                        self.actualiserEcran(False, seqNum=0, sucNum=i)
-                        time.sleep(0.2)
+                    self.display_crochet_sequence()
                     self._remove_casks_at_start()
                     self.mario.reset()
             elif(((self.grue.state == Constantes.NORMAL and self.grue.position != 0) or self.grue.state == Constantes.TERMINE) and self.mario.etat == Constantes.SAUT and self.mario.ligne == 0):
                 self.echecCount += 1
-                for i in range(1, 3):
-                    self.actualiserEcran(False, seqNum=i)
-                    time.sleep(0.2)
+                self.display_echec_sequence()
                 time.sleep(0.3)
+                self._remove_casks_at_start()
                 self.mario.reset()
                     
             # Mettre à jour l'image à l'écran
@@ -90,23 +85,74 @@ class Jeu:
             # attendre 100 millisecondes (délai de référence)
             time.sleep(0.1)
 
+    def display_echec_sequence(self):
+        for i in range(1, 3):
+            self.presentation.effacerImageInterne()
+            self.presentation.afficherMarioEchec(i)
+            for barre in self.bars:
+                self.presentation.afficherBarre(barre.position)
+            for cask in self.casks:
+                self.presentation.afficherTonneau(cask.ligne, cask.position)
+            
+            if(self.nbCrochets > 0):
+                self.presentation.afficherDonkeyKong(self.donkeyKong.position, self.donkeyKong.state)
+        
+            self.presentation.afficherLevier(self.grue.state)
+            self.presentation.afficherEchecs(self.echecCount)
+            self.presentation.afficherScore(self.points)
+            self.presentation.afficherEchafaudage(self.nbCrochets)
+            self.presentation.actualiserFenetreGraphique()
+            time.sleep(0.2)
+
+    def display_crochet_sequence(self):
+        for i in range(1, 4):
+            self.presentation.effacerImageInterne()
+            self.presentation.afficherMarioSucces(i)
+            for barre in self.bars:
+                self.presentation.afficherBarre(barre.position)
+            for cask in self.casks:
+                self.presentation.afficherTonneau(cask.ligne, cask.position)
+            
+            if(self.nbCrochets > 0):
+                self.presentation.afficherDonkeyKong(self.donkeyKong.position, self.donkeyKong.state)
+        
+            self.presentation.afficherLevier(self.grue.state)
+            self.presentation.afficherEchecs(self.echecCount)
+            self.presentation.afficherScore(self.points)
+            self.presentation.afficherEchafaudage(self.nbCrochets)
+            self.presentation.actualiserFenetreGraphique()
+            time.sleep(0.2)
+
+    def display_success_sequence(self):
+
+        for i in range(1, 6):
+            self.presentation.effacerImageInterne()
+            self.presentation.afficherMarioSuccesDK(i)
+            for barre in self.bars:
+                self.presentation.afficherBarre(barre.position)
+            
+            for cask in self.casks:
+                self.presentation.afficherTonneau(cask.ligne, cask.position)
+            
+            if(self.nbCrochets > 0):
+                self.presentation.afficherDonkeyKong(self.donkeyKong.position, self.donkeyKong.state)
+
+            self.presentation.afficherLevier(self.grue.state)
+            self.presentation.afficherEchecs(self.echecCount)
+            self.presentation.afficherScore(self.points)
+            self.presentation.afficherEchafaudage(self.nbCrochets)
+            self.presentation.actualiserFenetreGraphique()
+            time.sleep(0.2)
+
     # ----------------------------------------------------------------------------
     # mettre à jour l'image à l'écran
 
-    def actualiserEcran(self, usual = True, seqNum = 0, sucNum = 0):
-        self.presentation.effacerImageInterne()
-        
-        if(usual):
-            self.presentation.afficherMario(self.mario.ligne, self.mario.position,
-                                        self.mario.etat)
-        else:
-            if seqNum != 0:
-                self.presentation.afficherMarioEchec(seqNum)
-            elif self.nbCrochets > 0:
-                self.presentation.afficherMarioSucces(sucNum)
-            elif self.nbCrochets == 0:
-                self.presentation.afficherMarioSuccesDK(sucNum)
+    def actualiserEcran(self):
 
+        self.presentation.effacerImageInterne()
+        self.presentation.afficherMario(self.mario.ligne, self.mario.position,
+                                        self.mario.etat)
+        
         if(self.nbCrochets > 0):
             self.presentation.afficherDonkeyKong(self.donkeyKong.position, self.donkeyKong.state)
         
@@ -169,7 +215,7 @@ class Jeu:
         for cask in self.casks:
             if bias[cask.ligne] == self.mario.ligne and self._is_collision(cask, bias):
                 if self.mario.etat == Constantes.SAUT :
-                    if cask.delai == 0:
+                    if cask.delai == 1:
                         self.points += 1
                 else:
                     self.collision()

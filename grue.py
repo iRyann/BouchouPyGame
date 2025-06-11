@@ -6,7 +6,7 @@ class Grue:
         self.state = Constantes.TERMINE
         self.position = 0
         self.rise = True
-        self.activeDelay = 50
+        self.activeDelay = 150
 
     def actualiser(self, event):
 
